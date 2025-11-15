@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Multilingual Word Game</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(to bottom, #f0f4f8, #d9e2ec);
+      color: #333;
+    }
+    #game-container {
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+    input, button {
+      padding: 12px 16px;
+      margin: 8px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+    }
+    input {
+      width: 220px;
+      border: 2px solid #ccc;
+    }
+    button {
+      background: #3498db;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #2980b9;
+      transform: translateY(-2px);
+    }
+    .option {
+      display: block;
+      width: 80%;
+      margin: 12px auto;
+      padding: 14px;
+      font-size: 18px;
+      background: #ecf0f1;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .option:hover {
+      background: #bdc3c7;
+    }
+    .correct {
+      background: #27ae60 !important;
+      color: white;
+    }
+    .incorrect {
+      background: #e74c3c !important;
+      color: white;
+    }
+    .hidden { display: none; }
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background: #f1f1f1;
+      font-weight: bold;
+    }
+    #timer, #score {
+      font-size: 20px;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <h1>Multilingual Word Game</h1>
+
+    <!-- شاشة إدخال الاسم -->
+    <div id="name-input">
+      <input type="text" id="player-name" placeholder="Enter your name" />
+      <button id="start-btn">Start Game</button>
+    </div>
+
+    <!-- شاشة اللعبة -->
+    <div id="game-screen" class="hidden">
+      <p>Time: <span id="timer">60</span></p>
+      <p id="score">Score: 0</p>
+      <h2 id="word-display"></h2>
+      <div id="options-container"></div>
+      <button id="leaderboard-btn">Show Leaderboard</button>
+    </div>
+
+    <!-- شاشة الريكوردات -->
+    <div id="leaderboard-screen" class="hidden">
+      <h2>Leaderboard</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Score</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard-body"></tbody>
+      </table>
+      <button id="clear-leaderboard-btn">Clear Leaderboard</button>
+      <button id="back-to-game-btn">Back to Game</button>
+    </div>
+  </div>
+
+  <script src="sketch.js"></script>
+</body>
+</html>
