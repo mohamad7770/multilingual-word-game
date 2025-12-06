@@ -7,6 +7,7 @@
 
 
 🎮 Project Description
+
 An interactive game for learning and practicing word translation between English and Russian. The game tests your vocabulary knowledge by displaying a word and asking you to select the correct translation from multiple choices.
 ✨ Features
 Simple and easy UI - Intuitive design for users
