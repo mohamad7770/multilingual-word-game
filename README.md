@@ -1,4 +1,4 @@
-Word Translation Game
+# Word Translation Game
 
 
 <img width="854" height="672" alt="image" src="https://github.com/user-attachments/assets/00e8a290-8f0f-4f0a-be4f-230334b8183a" />
