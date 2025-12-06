@@ -1,134 +1,361 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Multilingual Word Game</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 20px;
-      background: linear-gradient(to bottom, #f0f4f8, #d9e2ec);
-      color: #333;
-    }
-    #game-container {
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 30px;
-      background: white;
-      border-radius: 16px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    }
-    h1 {
-      color: #2c3e50;
-      margin-bottom: 10px;
-    }
-    input, button {
-      padding: 12px 16px;
-      margin: 8px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-    }
-    input {
-      width: 220px;
-      border: 2px solid #ccc;
-    }
-    button {
-      background: #3498db;
-      color: white;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: #2980b9;
-      transform: translateY(-2px);
-    }
-    .option {
-      display: block;
-      width: 80%;
-      margin: 12px auto;
-      padding: 14px;
-      font-size: 18px;
-      background: #ecf0f1;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .option:hover {
-      background: #bdc3c7;
-    }
-    .correct {
-      background: #27ae60 !important;
-      color: white;
-    }
-    .incorrect {
-      background: #e74c3c !important;
-      color: white;
-    }
-    .hidden { display: none; }
-    table {
-      width: 100%;
-      margin-top: 20px;
-      border-collapse: collapse;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: center;
-    }
-    th {
-      background: #f1f1f1;
-      font-weight: bold;
-    }
-    #timer, #score {
-      font-size: 20px;
-      font-weight: bold;
-      color: #2c3e50;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multilingual Word Game</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/addons/p5.dom.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a237e, #4a148c);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ffffff;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Name input screen */
+        #name-input {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            width: 100%;
+        }
+        
+        #player-name {
+            width: 80%;
+            max-width: 300px;
+            padding: 15px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            outline: none;
+            transition: all 0.3s;
+        }
+        
+        #player-name:focus {
+            box-shadow: 0 0 15px rgba(81, 203, 238, 1);
+            transform: scale(1.05);
+        }
+        
+        /* Game screen */
+        #game-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            width: 100%;
+        }
+        
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        #word-display {
+            background: white;
+            color: #1a237e;
+            padding: 30px;
+            font-size: 2em;
+            font-weight: bold;
+            border-radius: 15px;
+            text-align: center;
+            width: 100%;
+            min-height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        #options-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            width: 100%;
+        }
+        
+        .option {
+            padding: 20px;
+            background: linear-gradient(135deg, #3949ab, #5c6bc0);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .option:hover {
+            background: linear-gradient(135deg, #5c6bc0, #3949ab);
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .option:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .option.correct {
+            background: linear-gradient(135deg, #2e7d32, #4caf50) !important;
+            color: white;
+        }
+        
+        .option.incorrect {
+            background: linear-gradient(135deg, #c62828, #f44336) !important;
+            color: white;
+        }
+        
+        /* Leaderboard screen */
+        #leaderboard-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            width: 100%;
+        }
+        
+        #leaderboard-table {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        #leaderboard-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        #leaderboard-table th {
+            background: rgba(57, 73, 171, 0.8);
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+        }
+        
+        #leaderboard-table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        #leaderboard-table tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        #leaderboard-table tr:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Buttons */
+        .button-container {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 200px;
+            background: linear-gradient(135deg, #ff9800, #ff5722);
+            color: white;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        button#leaderboard-btn {
+            background: linear-gradient(135deg, #673ab7, #9c27b0);
+        }
+        
+        button#back-to-game-btn {
+            background: linear-gradient(135deg, #2196f3, #03a9f4);
+        }
+        
+        button#clear-leaderboard-btn {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            #options-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-container {
+                flex-direction: column;
+            }
+            
+            button {
+                min-width: auto;
+                width: 100%;
+            }
+            
+            #word-display {
+                font-size: 1.5em;
+                padding: 20px;
+            }
+        }
+        
+        /* Messages */
+        .message {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            font-size: 18px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-  <div id="game-container">
-    <h1>Multilingual Word Game</h1>
-
-    <!-- شاشة إدخال الاسم -->
-    <div id="name-input">
-      <input type="text" id="player-name" placeholder="Enter your name" />
-      <button id="start-btn">Start Game</button>
+    <div class="container">
+        <h1>🎮 Multilingual Word Game</h1>
+        
+        <!-- Name input screen -->
+        <div id="name-input" class="screen">
+            <div class="message">
+                Translation test: English ↔ Russian<br>
+                Enter your name and start playing!
+            </div>
+            
+            <input type="text" id="player-name" placeholder="Enter your name here">
+            
+            <div class="button-container">
+                <button id="start-btn">🎮 Start Game</button>
+                <button id="leaderboard-btn">🏆 Leaderboard</button>
+            </div>
+        </div>
+        
+        <!-- Main game screen -->
+        <div id="game-screen" class="screen hidden">
+            <div class="game-info">
+                <div>⏰ Time: <span id="timer">60</span> seconds</div>
+                <div>⭐ Score: <span id="score">0</span></div>
+            </div>
+            
+            <div id="word-display">
+                Word will appear here
+            </div>
+            
+            <div id="options-container">
+                <!-- Buttons will be created dynamically -->
+            </div>
+            
+            <div class="button-container">
+                <button id="back-to-game-btn">🏠 Back to Main Screen</button>
+            </div>
+        </div>
+        
+        <!-- Leaderboard screen -->
+        <div id="leaderboard-screen" class="screen hidden">
+            <h2>🏆 Leaderboard</h2>
+            
+            <div id="leaderboard-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player Name</th>
+                            <th>Score</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-body">
+                        <!-- Will be filled dynamically -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="button-container">
+                <button id="clear-leaderboard-btn">🗑️ Clear Results</button>
+                <button id="back-to-game-btn">🎮 Back to Game</button>
+            </div>
+        </div>
     </div>
 
-    <!-- شاشة اللعبة -->
-    <div id="game-screen" class="hidden">
-      <p>Time: <span id="timer">60</span></p>
-      <p id="score">Score: 0</p>
-      <h2 id="word-display"></h2>
-      <div id="options-container"></div>
-      <button id="leaderboard-btn">Show Leaderboard</button>
-    </div>
-
-    <!-- شاشة الريكوردات -->
-    <div id="leaderboard-screen" class="hidden">
-      <h2>Leaderboard</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Rank</th>
-            <th>Name</th>
-            <th>Score</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        <tbody id="leaderboard-body"></tbody>
-      </table>
-      <button id="clear-leaderboard-btn">Clear Leaderboard</button>
-      <button id="back-to-game-btn">Back to Game</button>
-    </div>
-  </div>
-
-  <script src="sketch.js"></script>
+    <script src="sketch.js"></script>
 </body>
 </html>
